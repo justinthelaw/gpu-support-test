@@ -21,6 +21,8 @@ docker system prune -a -f && docker volume prune -f # OPTIONAL (removes unused c
 
 Look at the instructions on the following websites to troubleshoot:
 
-1. Find the correct CUDA for your environment: https://developer.nvidia.com/cuda-downloads
-2. Install CUDA properly: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
-2. Docker GPU accessibility: https://docs.docker.com/config/containers/resource_constraints/#gpu
+1. Prepare your machine for NVIDIA Driver installation: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
+2. Install the proper NVIDIA Drivers: https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#pre-install
+3. Find the correct CUDA for your environment: https://developer.nvidia.com/cuda-downloads
+4. Install CUDA properly: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
+5. Docker GPU accessibility: https://docs.docker.com/config/containers/resource_constraints/#gpu
