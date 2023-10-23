@@ -2,6 +2,8 @@
 
 This is a simple repository for running a test against your docker engine to see if it has passthrough access to your CUDA GPU(s).
 
+To double check, you can also run through the steps seen here: https://docs.docker.com/config/containers/resource_constraints/#gpu
+
 ## Run the Test
 
 ```bash
