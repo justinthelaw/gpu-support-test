@@ -21,5 +21,6 @@ docker system prune -a -f && docker volume prune -f # OPTIONAL (removes unused c
 
 Look at the instructions on the following websites to troubleshoot:
 
-1. Install CUDA properly: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
+1. Find the correct CUDA for your environment: https://developer.nvidia.com/cuda-downloads
+2. Install CUDA properly: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
 2. Docker GPU accessibility: https://docs.docker.com/config/containers/resource_constraints/#gpu
