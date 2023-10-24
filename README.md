@@ -2,19 +2,17 @@
 
 This is a simple repository for running a test against your docker engine to see if it has passthrough access to your CUDA GPU(s).
 
-## Run the Test
+## Build and Run the Test
 
 ```bash
 docker build -t gpu-test .
-docker run gpu-test
+docker run --gpus all -it --rm gpu-test
 ```
 
-## Remove the Test
+## Remove the Test Image
 
 ```bash
-docker ps -a # grab the container ID with the tag "gpu-test"
-docker remove <CONTAINER_ID> # use "docker kill <CONTAINER_ID>" as necessary
-docker system prune -a -f && docker volume prune -f # OPTIONAL (removes unused containers, images, and volumes)
+docker system prune -a -f && docker volume prune -f # OPTIONAL (removes all unused containers, images, and volumes)
 ```
 
 ## If CUDA Isn't Available
