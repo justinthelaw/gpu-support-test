@@ -39,3 +39,8 @@ cd constrained-docker-container && chmod +x ./run.sh
 ```
 
 To modify the base operating system of constraints, please see the _Dockerfile_ and _run.sh_.
+
+See the following pages for CPU versus GPU isolation testing.
+
+* CPU: https://coda.io/d/Navy_d-MPCqR5Knp/Gato-gato-pop-os-Pop-OS-22-04-LTS-NVIDIA_surBY#_luZwk
+* GPU: https://coda.io/d/_d-MPCqR5Knp/JLaw-law-desktop-Ubuntu-22-04-NX-Remote-Desktop_suovX
