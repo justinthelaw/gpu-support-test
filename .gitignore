@@ -1,4 +1,3 @@
 **/*.zst
 **/*.tar
-zarf-sbom/
-values.yaml
+zarf-packaged-software/
