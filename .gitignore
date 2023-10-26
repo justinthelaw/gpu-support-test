@@ -1,2 +1,4 @@
 **/*.zst
 **/*.tar
+zarf-sbom/
+values.yaml
