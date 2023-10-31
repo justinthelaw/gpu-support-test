@@ -9,6 +9,7 @@ This is a simple repository for running a test against your docker engine to see
 ### Build and Run the Test
 
 ```bash
+cd docker-gpu-test
 docker build -t gpu-test .
 docker run --gpus all -it --rm gpu-test
 ```
