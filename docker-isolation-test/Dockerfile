@@ -5,8 +5,8 @@ FROM ubuntu:22.04
 WORKDIR /home/dev
 
 # Pull in binaries and Zarf packages from host at container runtime
-COPY foundational-software/ /home/dev/foundational-software/
-COPY zarf-packaged-software/ /home/dev/zarf-packaged-software/
+COPY tools/ /home/dev/tools/
+COPY zarf-packages/ /home/dev/zarf-packages/
 
 # Give access to GPU when run
 ENV NVIDIA_VISIBLE_DEVICES all
