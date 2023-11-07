@@ -1,4 +1,10 @@
-# (ARCHIVE - NEEDS TO BE UPDATED)
+# NEEDS TO BE UPDATED AFTER THE FOLLOWING
+
+1. Cut release tags for all components
+2. Build and push docker images up to GHCR
+3. Create Zarf packages
+4. Deploy Zarf packages to LF-04
+5. Push Zarf packages up to GHCR
 
 ---
 
@@ -43,7 +49,7 @@ chmod +x /usr/local/bin/zarf
 #### Kubectl
 
 ```bash
-sudo apt install kubectl # maybe able to use Zarf one
+sudo apt install kubectl
 ```
 
 #### K3d
