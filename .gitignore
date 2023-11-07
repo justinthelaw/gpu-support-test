@@ -1,3 +1,2 @@
-**/*.zst
-**/*.tar
-zarf-packaged-software/
+tools/
+zarf-packages/
