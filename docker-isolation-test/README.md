@@ -21,4 +21,4 @@ For more detailed instructions on how these packages were created, and how to in
 
 ## Load Balancer Exposing
 
-The command to expose docker is: `k3d cluster edit dubbd --port-add "8083:30535@loadbalancer"`` or whatever port you want to use instead of 8083 all the connections are https so if you try to reach doug-translate from your browser you'll need to hit https://localhost:8083
+The command to expose docker is: `k3d cluster edit dubbd --port-add "8083:30535@loadbalancer"` or whatever port you want to use instead of 8083 all the connections are https so if you try to reach doug-translate from your browser you'll need to hit https://localhost:8083
