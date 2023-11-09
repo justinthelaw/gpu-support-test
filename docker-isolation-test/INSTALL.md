@@ -1,26 +1,25 @@
-# NEEDS TO BE UPDATED AFTER THE FOLLOWING
+# LeapfrogAI Installation - CPU Inferencing for AI Transcription and Summarization
 
-1. Cut release tags for all components
-2. Build and push docker images up to GHCR
-3. Create Zarf packages
-4. Deploy Zarf packages to LF-04
-5. Push Zarf packages up to GHCR
+## Zarf
 
----
+The following instructions rely on Zarf to easily and quickly install all parts of the stack into a Kubernetes cluster
 
-# LeapfrogAI Installation - CPU Inferencing for Transcription and Summarization
+Deploying or updating things inside a Kubernetes cluster with Zarf is as easy as:
 
-This example installation set will cover the CPU-based inferencing Transcription and Summarization use-case. The instructions are just a set of commands that must be executed to properly get the use-case upa nd running.
+```bash
+zarf package create --confirm
+zarf package deploy --confirm
+```
 
-This is an opinionated installation instruction set. All other methods, to include delivery to an air-gap (controlled ingress and egress network), are not supported by this instruction set. For specific needs or use-cases, please go to https://leapfrog.ai/ for support or submit an issue at https://github.com/defenseunicorns/leapfrogai.
+See https://zarf.dev/ for more details.
 
 ## Assumptions
 
 The following assumptions are being made for the writing of these installation steps:
 
-- User has a Unix-based operating system with `sudo` access
+- User has a standard Unix-based operating system installed, with `sudo` access
   - Commands may need to be modified based on specific distribution
-  - Instruction commands were executed in an Ubuntu 22.04 LTS terminal
+  - Commands were executed in an Ubuntu 22.04 LTS bash terminal
 - User has a machine with at least the following minimum specifications:
   - CPU with at least 6 cores @ 2.70 GHz
   - RAM with at least 64 GB free memory
@@ -28,143 +27,234 @@ The following assumptions are being made for the writing of these installation s
 
 ## Instructions
 
-The following steps and commands must be executed in the order they are presented. "root folder" means the base folder where you are storing all the project dependencies.
+The following steps and commands must be executed in the order that they are presented, top to bottom. All `cd` commands are done relative to your development environment's root folder. Assume every new step starts at the root folder.
+
+_Note 1_: "root folder" means the base directory where you are storing all the project dependencies for this installation.
+
+_Note 2_: 1) "Internet Access" and 2) "Isolated Network" will be noted when the instructions differ between 1) a system that can pull and execute remote dependencies from the internet, and 2) a system that is isolated and cannot reach outside networks or remote repositories.
+
+_Note 3:_  For all "Isolated Network" installs, `wget`, `git clone` and `zarf package create` commands are assumed to have been done and stored on a removable media device. These commands are under the bash comments `download` and `create`.
+
+_Note 4:_ For instances where you do not want to download a tagged version of a LeapfrogAI release (e.g., leapfrogai-ctransformers-backend:0.2.0), you can perform the following generic instructions prior to any of the `zarf package create` commands:
+
+```bash
+docker build -t "ghcr.io/defenseunicorns/leapfrogai/<NAME_OF_PACKAGE>:<DESIRED_TAG>" .
+# do a find and replace on anything matching the official tag
+# example in VSCode for: in the git directory press alt+shift+f, and search 0.2.0 and "replace all" with your DESIRED_TAG
+zarf package create zarf-package-<NAME_OF_PACKAGE>-*.tar.zst
+```
+
+### 0. Switch to Sudo
+
+```bash
+sudo su # login as required
+```
 
 ### 1. Install Tools
 
-#### Docker Engine
+#### jq
 
 ```bash
-sudo apt install docker-ce
+# download
+wget https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64
+
+# install
+mv jq-linux-amd64 /usr/local/bin/jq
+chmod +x /usr/local/bin/jq
+
+# check
+jq -V
+```
+
+#### Docker Engine
+
+_Internet Access:_
+
+```bash
+apt install docker-ce
+```
+
+_Isolated Network:_
+
+See [this link](https://docs.docker.com/engine/install/binaries/#install-daemon-and-client-binaries-on-linux) for more details.
+
+```bash
+# download
+wget https://download.docker.com/linux/static/stable/aarch64/docker-24.0.7.tgz
+
+# install
+tar xzvf docker-24.0.7.tgz
+mv docker/* /usr/local/bin/
+chmod +x /usr/local/bin/
+dockerd &
+
+# check
+docker -v
 ```
 
 #### Zarf
 
 ```bash
+# download
 wget https://github.com/defenseunicorns/zarf/releases/download/v0.31.0/zarf_v0.31.0_Linux_amd64
+
+# install
 mv zarf_v0.30.1_Linux_amd64 /usr/local/bin/zarf
 chmod +x /usr/local/bin/zarf
+
+# check
+zarf version
 ```
 
 #### Kubectl
 
+_Internet Access:_
+
 ```bash
-sudo apt install kubectl
+apt install kubectl
+```
+
+_Isolated Network:_
+
+```bash
+# download
+wget https://dl.k8s.io/v1.28.3/bin/darwin/amd64/kubectl
+
+# install
+mv kubectl /usr/local/bin/kubectl
+chmod +x /usr/local/bin/kubectl
+
+# check
+kubectl version
 ```
 
 #### K3d
 
+_Internet Access:_
+
 ```bash
-sudo apt install k3d
+apt install k3d
 ```
 
-### 2. K3d Cluster
+_Isolated Network:_
 
 ```bash
+# download
+wget https://github.com/k3d-io/k3d/releases/download/v5.6.0/k3d-linux-amd64
+
+# install
+mv k3d-linux-amd64 /usr/local/bin/k3d
+chmod +x /usr/local/bin/k3d
+
+# check
+k3d version
+```
+
+### 2. Setup the K3d Cluster
+
+```bash
+# download
 git clone https://github.com/defenseunicorns/uds-package-dubbd.git
-cd uds-package-dubbd/k3d/local # from root folder
+cd uds-package-dubbd/k3d/local
+
+# create
 zarf package create --confirm
+
+# deploy
 zarf package deploy --confirm zarf-package-k3d-local-*.tar.zst
 ```
 
-### 3. DUBBD
+### 3. Deploy DUBBD
 
 ```bash
-cd ../ # into uds-package-dubbd/k3d/ folder
+# create
+cd uds-package-dubbd/k3d/
 docker login registry1.dso.mil # account creation is required
 zarf package create --confirm
-zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
+
+# install
+zarf package deploy zarf-package-dubbd-*.tar.zst --confirm
 ```
 
 ### 4. LeapfrogAI
 
 ```bash
-cd ../../ # into root folder
-git clone https://github.com/defenseunicorns/leapfrogai.git
-cd leapfrogai
-git checkout 223-k8s-networking-updates-whisper-jlaw
+# download
+git clone https://github.com/defenseunicorns/leapfrogai-api.git
+cd leapfrogai-api/
+
+# create
 zarf package create --confirm
-zarf package deploy zarf-package-leapfrogai-*.zst --confirm
+
+# install
+zarf package deploy zarf-package-leapfrogai-api-*.zst
+# press "y" for prompt on deployment confirmation
+# press "y" for prompt to create and expose new gateway for load balancer access
 ```
 
 ### 5. Whisper Model
 
 ```bash
-cd ../ # into root folder
+# download
 git clone https://github.com/defenseunicorns/leapfrogai-backend-whisper.git
 cd leapfrogai-backend-whisper # into leapfrogai-backend-whisper folder
-docker build -t ghcr.io/defenseunicorns/leapfrogai/whisper:0.0.1 .
+
+# create
 zarf package create --confirm
-zarf package deploy zarf-package-whisper-*.tar.zst
+
+# install
+zarf package deploy zarf-package-whisper-*.tar.zst --confirm
 ```
 
 ### 6. CTransformers
 
 ```bash
-cd ../ # into root folder
+# download
 git clone https://github.com/defenseunicorns/leapfrogai-backend-ctransformers.git
-cd leapfrogai-backend-ctransformers # into leapfrogai-backend-ctransformers folder
-docker build -t ghcr.io/defenseunicorns/leapfrogai/ctransformers:0.0.2 .
+cd leapfrogai-backend-ctransformers
+
+# create
 zarf package create --confirm
-zarf package deploy zarf-package-ctransformers-*.tar.zst
+
+# install
+zarf package deploy zarf-package-ctransformers-*.tar.zst --confirm
 ```
 
-### 8. Doug Translate
+### 8. Leapfrog Transcribe
 
 ```bash
-cd ../ # into root folder
+# download
 git clone https://github.com/defenseunicorns/doug-translate.git
-cd doug-translate # into doug-translate folder
-docker build . -t defenseunicorns/doug-translate:0.0.1
-git checkout fix-dubbd-lfai-zarf-deployment
-zarf package create -o pkgs --confirm
-zarf package deploy pkgs/zarf-package-doug-translate-amd64-0.0.1.tar.zst --confirm
+cd doug-translate
+
+# create
+zarf package create --confirm
+
+# install
+zarf package deploy zarf-package-doug-translate-amd64-0.0.1.tar.zst
+# press "y" for prompt on deployment confirmation
+# for "LEAPFROGAI_BASE_URL" prompt, press enter
+# for "DOMAIN" prompt type "localhost:8083"
+# for "SUMMARIZATION_MODEL" prompt, press enter
 ```
 
 #### 9. Setup Access
 
-If using the https://doug-translate.bigbang.dev URL as your frontend access point:
-
 ```bash
-# opens k9s
-zarf tools monitor
-# go to services by typing the following and pressing ENTER
-:services
-# take note of the External IP of istio-service/tenant
-# use Ctrl+C to exit k9s
-sudo vim /etc/hosts
-# add the following line, where <IP_ADDRESS> is the External IP of istio-service/tenant:
-# <IP_ADDRESS>    leapfrogai.leapfrogai.bigbang.dev    doug-translate.bigbang.dev
+k3d cluster edit dubbd --port-add "8083:30535@loadbalancer"
 ```
 
-If using the the Istio System Tenant Gateway IP address (e.g., https://172.18.255.1) as your frontend access point:
+#### 10. Test Access
 
-```bash
-# opens k9s
-zarf tools monitor
-# go to gateways by typing the following and pressing ENTER
-:gateways
-# highlight istio-system/tenant and press E to edit the
-e
-# press I to insert in VIM
-# modify any hosts that have a value of "*bigbang.dev" to be "*"
-# press ESC then type ":wq" and press ENTER
-```
+Go to https://localhost:8083 to hit the Leapfrog Transcribe frontend web application.
 
-#### 10. Test API
+## Disclaimers
 
-```bash
-# test API
-curl --location --insecure 'https://leapfrogai.leapfrogai.bigbang.dev/openai/v1/models'
-# test installed model
-curl --location --insecure 'https://leapfrogai.leapfrogai.bigbang.dev/openai/v1/completions' \
---header 'Content-Type: application/json' \
---data '{"model":"ctransformers",
-"prompt":"Who was the president in 2015?",
-"temperature":1.0,
-"max_tokens":1024}'
-```
+The stack as it currently stands (Nov 2023) is a free prototype. The list below contains all of the possible issues you may run into as you use this to transcribe and summarize meetings.
 
-#### 11. Access Frontend
-
-Go to https://doug-translate.bigbang.dev or https://<ISTIO_TENANT_IP> to upload an audio file and then generate a summary.
+- It cannot gracefully (slow or clashing request handling) handle concurrent users, so 1 user at a time is recommended if no replica sets are created
+- Transcription and summarization workflow for a dense, 1-hour audio takes anywhere between 10-20 minutes depending on CPU and RAM
+- Transcription and summarization accuracy worsens for audio longer than 30 minutes on whisper-base
+    - Transcription accuracy is around 97% for audio between 5-20 minutes, and goes down to 70-95% for audio shorter or longer than 5-20 minutes
+    - See the following for some transcription benchmarking details: https://github.com/defenseunicorns/whisper-benchmarking
+    - Summarization has not been benchmarked, and the batching/concatenation method is experimental
