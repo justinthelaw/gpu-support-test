@@ -2,7 +2,7 @@
 
 docker build -t airgap-ubuntu-2204 . && \
 
-docker run --rm -it \
+docker run -it \
   --memory=64g \
   --gpus device=0 \
   -v volume:/container/storage \
