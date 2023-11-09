@@ -24,7 +24,7 @@ The following assumptions are being made for the writing of these installation s
   - CPU with at least 6 cores @ 2.70 GHz
   - RAM with at least 64 GB free memory
   - Storage with at least 128 GB free space
-  - See [Dockerfile](./Dockerfile) for base software details
+  - Minimum base software: `apt update && apt install build-essential iptables git procps jq docker.io -y`
 
 ## Instructions
 
@@ -68,7 +68,7 @@ cd tools
 wget https://github.com/defenseunicorns/zarf/releases/download/v0.31.0/zarf_v0.31.0_Linux_amd64
 
 # install
-mv zarf_v0.30.1_Linux_amd64 /usr/local/bin/zarf
+mv zarf_v0.31.0_Linux_amd64 /usr/local/bin/zarf
 chmod +x /usr/local/bin/zarf
 
 # check
@@ -119,6 +119,12 @@ k3d version
 ```
 
 ### 2. Install Zarf Packages
+
+For each of these commands, be in the `zarf-packages/` directory.
+
+```bash
+cd zarf-packages
+```
 
 #### Setup the K3d Cluster
 
