@@ -4,13 +4,14 @@ FROM ubuntu:22.04
 # Create working directory for copy
 WORKDIR /home/dev
 
-# Pull in instructions
+# Pull in instructions and tool install script
 COPY INSTALL.md /home/dev
+COPY install-tools.sh .
 
 USER root
 # should be on every operating system
 RUN apt update && apt upgrade -y
-RUN apt install build-essential iptables git procps jq docker -y
+RUN apt install build-essential iptables git procps jq docker.io -y
 
 # Pull in binaries and Zarf packages from host at container runtime
 COPY tools/ /home/dev/tools/
