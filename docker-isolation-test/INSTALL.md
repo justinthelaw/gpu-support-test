@@ -24,6 +24,7 @@ The following assumptions are being made for the writing of these installation s
   - CPU with at least 6 cores @ 2.70 GHz
   - RAM with at least 64 GB free memory
   - Storage with at least 128 GB free space
+  - See [Dockerfile](./Dockerfile) for base software details
 
 ## Instructions
 
@@ -44,6 +45,8 @@ docker build -t "ghcr.io/defenseunicorns/leapfrogai/<NAME_OF_PACKAGE>:<DESIRED_T
 zarf package create zarf-package-<NAME_OF_PACKAGE>-*.tar.zst
 ```
 
+_Note 5:_ It may be in your best interest to perform the steps in "Note 4", as the main branches of all the LeapfrogAI branches are usually more bug-free and feature complete than our releases (we are in our infancy).
+
 ### 0. Switch to Sudo
 
 ```bash
@@ -52,44 +55,10 @@ sudo su # login as required
 
 ### 1. Install Tools
 
-#### jq
+For each of these commands, be in the `tools/` directory.
 
 ```bash
-# download
-wget https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64
-
-# install
-mv jq-linux-amd64 /usr/local/bin/jq
-chmod +x /usr/local/bin/jq
-
-# check
-jq -V
-```
-
-#### Docker Engine
-
-_Internet Access:_
-
-```bash
-apt install docker-ce
-```
-
-_Isolated Network:_
-
-See [this link](https://docs.docker.com/engine/install/binaries/#install-daemon-and-client-binaries-on-linux) for more details.
-
-```bash
-# download
-wget https://download.docker.com/linux/static/stable/aarch64/docker-24.0.7.tgz
-
-# install
-tar xzvf docker-24.0.7.tgz
-mv docker/* /usr/local/bin/
-chmod +x /usr/local/bin/
-dockerd &
-
-# check
-docker -v
+cd tools
 ```
 
 #### Zarf
@@ -118,11 +87,10 @@ _Isolated Network:_
 
 ```bash
 # download
-wget https://dl.k8s.io/v1.28.3/bin/darwin/amd64/kubectl
+wget https://dl.k8s.io/release/v1.28.3/bin/linux/amd64/kubectl
 
 # install
-mv kubectl /usr/local/bin/kubectl
-chmod +x /usr/local/bin/kubectl
+install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # check
 kubectl version
@@ -150,7 +118,9 @@ chmod +x /usr/local/bin/k3d
 k3d version
 ```
 
-### 2. Setup the K3d Cluster
+### 2. Install Zarf Packages
+
+#### Setup the K3d Cluster
 
 ```bash
 # download
@@ -164,7 +134,7 @@ zarf package create --confirm
 zarf package deploy --confirm zarf-package-k3d-local-*.tar.zst
 ```
 
-### 3. Deploy DUBBD
+#### Deploy DUBBD
 
 ```bash
 # create
@@ -176,7 +146,7 @@ zarf package create --confirm
 zarf package deploy zarf-package-dubbd-*.tar.zst --confirm
 ```
 
-### 4. LeapfrogAI
+#### LeapfrogAI
 
 ```bash
 # download
@@ -192,7 +162,7 @@ zarf package deploy zarf-package-leapfrogai-api-*.zst
 # press "y" for prompt to create and expose new gateway for load balancer access
 ```
 
-### 5. Whisper Model
+#### Whisper Model
 
 ```bash
 # download
@@ -206,7 +176,7 @@ zarf package create --confirm
 zarf package deploy zarf-package-whisper-*.tar.zst --confirm
 ```
 
-### 6. CTransformers
+#### CTransformers
 
 ```bash
 # download
@@ -220,7 +190,7 @@ zarf package create --confirm
 zarf package deploy zarf-package-ctransformers-*.tar.zst --confirm
 ```
 
-### 8. Leapfrog Transcribe
+#### Leapfrog Transcribe
 
 ```bash
 # download
@@ -238,13 +208,13 @@ zarf package deploy zarf-package-doug-translate-amd64-0.0.1.tar.zst
 # for "SUMMARIZATION_MODEL" prompt, press enter
 ```
 
-#### 9. Setup Access
+#### 3. Setup Access
 
 ```bash
 k3d cluster edit dubbd --port-add "8083:30535@loadbalancer"
 ```
 
-#### 10. Test Access
+#### 4. Test Access
 
 Go to https://localhost:8083 to hit the Leapfrog Transcribe frontend web application.
 
