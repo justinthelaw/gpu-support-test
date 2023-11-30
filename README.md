@@ -1,12 +1,8 @@
-# Docker Isolation and GPU Testing
-
-This is a 2-part repository used to test whether the environment is properly configured to access the GPU from a Docker container.
-
-## Docker GPU Test
+# Docker GPU Testing
 
 This is a simple repository for running a test against your docker engine to see if it has passthrough access to your CUDA GPU(s).
 
-### Build and Run the Test
+## Build and Run the Test
 
 ```bash
 docker build -t gpu-test .
@@ -19,7 +15,7 @@ The next part is OPTIONAL - removes all unused containers, images, and volumes:
 docker system prune -a -f && docker volume prune -f # 
 ```
 
-### If CUDA Isn't Available
+## If CUDA Isn't Available
 
 Look at the instructions on the following websites to troubleshoot:
 
