@@ -23,7 +23,7 @@ USER 1001
 
 WORKDIR /prod
 
-COPY main.py .
+COPY src/main.py .
 COPY LICENSE /licenses/LICENSE.txt
 COPY --from=builder /tmp/.venv /prod/.venv
 

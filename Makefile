@@ -10,7 +10,7 @@ build-requirements:
 	pip install freeze > requirements.txt
 
 test:
-	python main.py
+	python src/main.py
 
 docker-local:
 	docker build -t gpu-support-testing . && \
