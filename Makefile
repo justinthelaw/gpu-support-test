@@ -17,4 +17,4 @@ docker-local:
 	docker run --gpus all -it --rm gpu-support-testing
 
 docker-latest:
-	docker run --gpus all -it --rm ghcr.io/justinthelaw/gpu-support-testing:latest
+	docker run --gpus all -it --rm ghcr.io/justinthelaw/gpu-support-test:latest
