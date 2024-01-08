@@ -1,0 +1,29 @@
+kind: ZarfPackageConfig
+metadata:
+  name: "###ZARF_PKG_TMPL_NAME###"
+  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  description: >
+    GPU(s) pass-through testing for containerized environments
+
+constants:
+  - name: IMAGE_VERSION
+    value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  - name: NAME
+    value: "###ZARF_PKG_TMPL_NAME###"
+
+components:
+  - name: test
+    required: true
+    files:
+      - manifests/deploy.yaml
+    images:
+      - ghcr.io/justinthelaw/gpu-support-test:###ZARF_PKG_TMPL_IMAGE_VERSION###
+    actions:
+      onDeploy:
+        after:
+          - wait:
+              cluster:
+                kind: Deployment
+                name: gpu-support-test
+                namespace: leapfrogai
+                condition: Available

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpu-support-test
+  namespace: leapfrogai
+spec:
+  selector:
+    matchLabels:
+      app: gpu-support-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gpu-support-test
+    spec:
+      containers:
+        - name: gpu-support-test
+          image: "ghcr.io/justinthelaw/gpu-support-test::###ZARF_VAR_IMAGE_VERSION###"
+          resources:
+            requests:
+              memory: "5Gi"
+              cpu: "500m"
+              nvidia.com/gpu: 1
+            limits:
+              memory: "5Gi"
+              cpu: "1000m"
+              nvidia.com/gpu: 1
