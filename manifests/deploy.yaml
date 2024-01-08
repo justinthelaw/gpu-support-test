@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gpu-support-test
-          image: "ghcr.io/justinthelaw/gpu-support-test::###ZARF_VAR_IMAGE_VERSION###"
+          image: "ghcr.io/justinthelaw/gpu-support-test:###ZARF_VAR_IMAGE_VERSION###"
           resources:
             requests:
               memory: "5Gi"
