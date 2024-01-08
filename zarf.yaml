@@ -14,8 +14,11 @@ constants:
 components:
   - name: test
     required: true
-    files:
-      - manifests/deploy.yaml
+    manifests:
+      - name: gpu-support-test
+        namespace: leapfrogai
+        files:
+          - manifests/deploy.yaml
     images:
       - ghcr.io/justinthelaw/gpu-support-test:###ZARF_PKG_TMPL_IMAGE_VERSION###
     actions:
