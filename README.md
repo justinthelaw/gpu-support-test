@@ -1,6 +1,6 @@
 # GPU Support Test
 
-This is a simple repository for running a test to confirm container passthrough access to your NVIDIA, CUDA-capable GPU(s).
+This is a simple repository for running a test to confirm the environment has container or pod passthrough access to your NVIDIA, CUDA-capable GPU(s).
 
 ## Pre-Requisites
 
@@ -8,7 +8,9 @@ Access to GitHub and GitHub Container Registry. Please follow the [GitHub Contai
 
 Docker and all of its dependencies must be installed. Python 3.11 and Python 3.11 virtual environment tools must be installed. To build and push a new version of the Docker image to the GHCR, Docker Buildx must be installed and configured correctly.
 
-For the GPU test, a NVIDIA GPU with CUDA cores and drivers must be present. Additionally, the CUDA toolkit and NVIDIA container toolkit must be installed. Please see the [Troubleshooting](#troubleshooting) section for details.
+For the container GPU test, a NVIDIA GPU with CUDA cores and drivers must be present. Additionally, the CUDA toolkit and NVIDIA container toolkit must be installed. Please see the [Troubleshooting](#troubleshooting) section for details.
+
+For Kubernetes testing and pre-requisites, please see [Kubernetes Deployment](#kubernetes-deployment) for details.
 
 ## Usage
 
@@ -68,7 +70,9 @@ docker buildx rm ${BUILDX_INSTANCE}
 
 ### Kubernetes Deployment
 
-The following instructions assumes that you already have an existing Kubernetes cluster up and running, and Zarf is pointed to that cluster and the context to be tested.
+The following instructions assumes that you already have an existing Kubernetes cluster up and running, the Kubernetes cluster already has the NVIDIA GPU operator plugin deployed and Zarf is pointed to that cluster and the context to be tested.
+
+Change the [deploy.yaml](./manifests/deploy.yaml) manifest to modify the number or slices of GPUs the pod can access. See [Troubleshooting](#troubleshooting) bullet item #6 for more details.
 
 The Kubernetes deployment of this test relies on Zarf. To package and deploy the test, execute the following:
 
@@ -86,3 +90,4 @@ Look at the instructions on the following websites to troubleshoot:
 3. Find the correct CUDA for your environment: https://developer.nvidia.com/cuda-downloads
 4. Install CUDA properly: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
 5. Docker GPU accessibility: https://docs.docker.com/config/containers/resource_constraints/#gpu
+6. NVIDIA GPU operator: https://github.com/NVIDIA/k8s-device-plugin
