@@ -14,6 +14,8 @@ For the GPU test, a NVIDIA GPU with CUDA cores and drivers must be present. Addi
 
 ### Local Development Instructions
 
+_*NOTE*_: Use `Ctrl-C` or a equivalent SIGTERM to end the looped test.
+
 ```bash
 make create-venv
 source .venv/bin/activate

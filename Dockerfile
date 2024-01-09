@@ -14,7 +14,7 @@ RUN python -m venv /tmp/.venv
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-FROM --platform=$BUILDPLATFORM python:3.11-alpine
+FROM --platform=$BUILDPLATFORM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/prod/.venv/bin:$PATH"
@@ -27,7 +27,4 @@ COPY src/main.py .
 COPY LICENSE /licenses/LICENSE.txt
 COPY --from=builder /tmp/.venv /prod/.venv
 
-CMD while true; do \
-    python /prod/main.py; \ 
-    sleep 5; \
-    done
+ENTRYPOINT [ "python", "-u", "main.py" ]
