@@ -17,6 +17,7 @@ For the GPU test, a NVIDIA GPU with CUDA cores and drivers must be present. Addi
 ```bash
 make create-venv
 source .venv/bin/activate
+make requirements
 make test
 ```
 
