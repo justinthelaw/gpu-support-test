@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM python:3.11 AS builder
+FROM --platform=$BUILDPLATFORM  ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev-amd64 AS builder
 
 ENV LANG=C.UTF-8
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -14,7 +14,7 @@ RUN python -m venv /tmp/.venv
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-FROM --platform=$BUILDPLATFORM python:3.11-slim
+FROM --platform=$BUILDPLATFORM ghcr.io/defenseunicorns/leapfrogai/python:3.11-amd64
 
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/prod/.venv/bin:$PATH"
