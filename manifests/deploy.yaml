@@ -13,6 +13,8 @@ spec:
       labels:
         app: gpu-support-test
     spec:
+      nodeSelector:
+        gpu: "true"
       containers:
         - name: gpu-support-test
           image: "ghcr.io/justinthelaw/gpu-support-test:###ZARF_VAR_IMAGE_VERSION###"
@@ -20,8 +22,6 @@ spec:
             requests:
               memory: "5Gi"
               cpu: "500m"
-              nvidia.com/gpu: 1
             limits:
               memory: "5Gi"
               cpu: "1000m"
-              nvidia.com/gpu: 1

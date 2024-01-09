@@ -66,6 +66,17 @@ docker buildx build --push \
 docker buildx rm ${BUILDX_INSTANCE}
 ```
 
+### Kubernetes Deployment
+
+The following instructions assumes that you already have an existing Kubernetes cluster up and running, and Zarf is pointed to that cluster and the context to be tested.
+
+The Kubernetes deployment of this test relies on Zarf. To package and deploy the test, execute the following:
+
+```bash
+zarf package create --confirm
+zarf package deploy --confirm
+```
+
 ## Troubleshooting
 
 Look at the instructions on the following websites to troubleshoot:
