@@ -27,4 +27,4 @@ COPY src/main.py .
 COPY LICENSE /licenses/LICENSE.txt
 COPY --from=builder /tmp/.venv /prod/.venv
 
-ENTRYPOINT [ "python", "-u", "main.py" ]
+ENTRYPOINT [ "python", "main.py" ]
