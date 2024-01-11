@@ -2,7 +2,7 @@ package:
   create:
     set:
       image_repository: "ghcr.io/justinthelaw/gpu-support-test"
-      image_version: 0.0.1
+      image_version: 0.0.2
       name: gpu-support-test
     max_package_size: "1000000000"
   deploy:
@@ -15,4 +15,4 @@ package:
       requests_gpu: 0
       name: gpu-support-test
       image_repository: "ghcr.io/justinthelaw/gpu-support-test"
-      image_version: 0.0.1
+      image_version: 0.0.2
