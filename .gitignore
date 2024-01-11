@@ -1,4 +1,3 @@
-tools/
-zarf-packages/
 .venv/
 tmp/
+*.tar.zst
