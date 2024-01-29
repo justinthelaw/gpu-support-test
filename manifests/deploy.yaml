@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "###ZARF_PKG_TMPL_NAME###"
+  name: "gpu-support-test"
   namespace: leapfrogai
 spec:
   selector:
     matchLabels:
-      app: "###ZARF_PKG_TMPL_NAME###"
+      app: "gpu-support-test"
   replicas: 1
   template:
     metadata:
       labels:
-        app: "###ZARF_PKG_TMPL_NAME###"
+        app: "gpu-support-test"
     spec:
       containers:
-        - name: "###ZARF_PKG_TMPL_NAME###"
-          image: "ghcr.io/justinthelaw/###ZARF_PKG_TMPL_NAME###:###ZARF_VAR_IMAGE_VERSION###"
+        - name: "gpu-support-test"
+          image: "ghcr.io/justinthelaw/gpu-support-test:###ZARF_VAR_IMAGE_VERSION###"
           resources:
             requests:
               memory: 0
               cpu: 0
+              nvidia.com/gpu: "###ZARF_VAR_REQUESTS_GPU###"
             limits:
               memory: 0
               cpu: 0
+              nvidia.com/gpu: "###ZARF_VAR_LIMITS_GPU###"
