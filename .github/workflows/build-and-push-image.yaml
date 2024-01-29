@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY_IMAGE: justinthelaw/gpu-support-test
+  REGISTRY_IMAGE: defenseunicorns/leapfrogai-gpu-support-test
   REGISTRY: ghcr.io
 
 jobs:
