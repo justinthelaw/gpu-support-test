@@ -6,10 +6,6 @@ on:
       - "v*.*.*"
   workflow_dispatch:
 
-env:
-  REGISTRY_IMAGE: defenseunicorns/leapfrogai-gpu-support-test
-  REGISTRY: ghcr.io
-
 jobs:
   build:
     runs-on: ubuntu-latest
