@@ -11,22 +11,34 @@ constants:
   - name: NAME
     value: "###ZARF_PKG_TMPL_NAME###"
 
+variables:
+  - name: RESOURCES_GPU
+    description: The GPU resources minimum that this pod can request from the K8s scheduler
+    default: 1
+    prompt: true
+    sensitive: false
+  - name: LIMITS_GPU
+    description: The GPU resource upper limit that this pod can request from the K8s scheduler
+    default: 1
+    prompt: true
+    sensitive: false
+
 components:
-  - name: test
+  - name: "###ZARF_PKG_TMPL_NAME###"
     required: true
     manifests:
-      - name: gpu-support-test
+      - name: "###ZARF_PKG_TMPL_NAME###"
         namespace: leapfrogai
         files:
           - manifests/deploy.yaml
     images:
-      - ghcr.io/justinthelaw/gpu-support-test:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/justinthelaw/###ZARF_PKG_TMPL_NAME###:###ZARF_PKG_TMPL_IMAGE_VERSION###
     actions:
       onDeploy:
         after:
           - wait:
               cluster:
                 kind: Deployment
-                name: gpu-support-test
+                name: "###ZARF_PKG_TMPL_NAME###"
                 namespace: leapfrogai
                 condition: Available
