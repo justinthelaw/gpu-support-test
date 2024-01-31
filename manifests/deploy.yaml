@@ -15,13 +15,13 @@ spec:
     spec:
       containers:
         - name: gpu-support-test
-          image: "ghcr.io/justinthelaw/gpu-support-test:###ZARF_VAR_IMAGE_VERSION###"
+          image: "###ZARF_VAR_IMAGE_REPOSITORY###:###ZARF_VAR_IMAGE_VERSION###"
           resources:
             requests:
-              memory: "5Gi"
-              cpu: "500m"
-              nvidia.com/gpu: "1" # change this number to access more than 1 GPU
+              memory: 0
+              cpu: 0
+              nvidia.com/gpu: "###ZARF_VAR_NUMBER_OF_EXPECTED_GPU###"
             limits:
-              memory: "5Gi"
-              cpu: "1000m"
-              nvidia.com/gpu: "1" # align this number with line #23
+              memory: 0
+              cpu: 0
+              nvidia.com/gpu: "###ZARF_VAR_NUMBER_OF_EXPECTED_GPU###"

@@ -7,12 +7,5 @@ package:
     max_package_size: "1000000000"
   deploy:
     set:
-      limits_cpu: 0
-      limits_memory: 0
-      limits_gpu: 0
-      requests_cpu: 0
-      requests_memory: 0
-      requests_gpu: 0
-      name: gpu-support-test
       image_repository: "ghcr.io/justinthelaw/gpu-support-test"
       image_version: 0.0.2

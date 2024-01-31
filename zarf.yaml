@@ -11,22 +11,36 @@ constants:
   - name: NAME
     value: "###ZARF_PKG_TMPL_NAME###"
 
+variables:
+  - name: NUMBER_OF_EXPECTED_GPU
+    description: Number of expected GPUs
+    default: 1
+    prompt: true
+
 components:
-  - name: test
+  - name: "###ZARF_PKG_TMPL_NAME###"
     required: true
     manifests:
-      - name: gpu-support-test
+      - name: "###ZARF_PKG_TMPL_NAME###"
         namespace: leapfrogai
         files:
           - manifests/deploy.yaml
     images:
-      - ghcr.io/justinthelaw/gpu-support-test:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - "###ZARF_PKG_TMPL_IMAGE_REPOSITORY###:###ZARF_PKG_TMPL_IMAGE_VERSION###"
     actions:
       onDeploy:
         after:
           - wait:
               cluster:
                 kind: Deployment
-                name: gpu-support-test
+                name: "###ZARF_PKG_TMPL_NAME###"
                 namespace: leapfrogai
-                condition: Available
+                condition: Available  
+        onSuccess:
+          - cmd: |
+              echo "Below are the logged results of the test:\n" && \
+              zarf tools kubectl logs -n leapfrogai deployment/gpu-support-test
+        onFailure:
+          - cmd: |
+              echo "Something went wrong during the test's deployment, please see the events below:\n" && \
+              zarf tools kubectl events -n leapfrogai gpu-support-test
