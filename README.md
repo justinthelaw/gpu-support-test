@@ -72,13 +72,13 @@ docker buildx rm ${BUILDX_INSTANCE}
 
 The following instructions assumes that you already have an existing Kubernetes cluster up and running, the Kubernetes cluster already has the NVIDIA GPU operator plugin deployed and Zarf is pointed to that cluster and the context to be tested.
 
-Change the [deploy.yaml](./manifests/deploy.yaml) manifest to modify the number or slices of GPUs the pod can access. See [Troubleshooting](#troubleshooting) bullet item #6 for more details.
+During deployment, a prompt will allow you to modify the number or slices of GPUs the pod can access. See [Troubleshooting](#troubleshooting) bullet item #6 for more details.
 
 The Kubernetes deployment of this test relies on Zarf. To package and deploy the test, execute the following:
 
 ```bash
 zarf package create --confirm
-zarf package deploy --confirm
+zarf package deploy # follow the prompts
 ```
 
 ## Troubleshooting
