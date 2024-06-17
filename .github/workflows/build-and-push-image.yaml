@@ -22,6 +22,20 @@ jobs:
           - linux/arm/v7
           - windows/amd64
     steps:
+      - name: Maximize GitHub Runner Space
+        uses: justinthelaw/maximize-github-runner-space@f1181577375d1bdbf1897db6295f50ff34fdc94a # v0.1.1
+        with:
+          # Standard package removal actions
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
+          # Custom removal actions
+          remove-large-packages: "true"
+          remove-swapfile: "true"
+          remove-cached-tools: "true"
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -109,14 +123,14 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha      
+            type=sha
 
       - name: Create Manifest and Push Image
         working-directory: /tmp/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
-            
+
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
