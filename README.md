@@ -41,7 +41,7 @@ make docker-latest
 
 #### Push New Remote Image
 
-Pushes are automated by [the GitHub workflow](./.github/workflows/ci.yaml) on push or pull request to `main`.
+Pushes are automated by [the GitHub workflow](./.github/workflows/build-and-push-image.yaml) on push or pull request to `main`.
 
 Below are manual steps for pushing a new image to a registry like GHCR using Docker. The comments above lines with environment variables are example values.
 
