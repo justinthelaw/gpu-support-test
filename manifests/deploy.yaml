@@ -4,6 +4,7 @@ metadata:
   name: gpu-support-test
   namespace: leapfrogai
 spec:
+  runtimeClassName: nvidia
   selector:
     matchLabels:
       app: gpu-support-test
