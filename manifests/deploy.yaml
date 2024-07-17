@@ -4,7 +4,6 @@ metadata:
   name: gpu-support-test
   namespace: leapfrogai
 spec:
-  runtimeClassName: nvidia
   selector:
     matchLabels:
       app: gpu-support-test
@@ -14,6 +13,7 @@ spec:
       labels:
         app: gpu-support-test
     spec:
+      runtimeClassName: nvidia
       containers:
         - name: gpu-support-test
           image: "###ZARF_VAR_IMAGE_REPOSITORY###:###ZARF_VAR_IMAGE_VERSION###"
